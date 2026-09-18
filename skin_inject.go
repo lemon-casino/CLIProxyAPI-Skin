@@ -1,0 +1,218 @@
+package main
+
+// skinInjectHTML is the fragment spliced into the panel asset
+// (management.html). The panel's React hydration strips unknown static
+// <style> elements from <head>, so the CSS rides inside the script and the
+// style element is re-asserted on every tick. Hide-type login tweaks are
+// applied through html flags + CSS so they hold from the first paint;
+// text-type tweaks (brand words, titles, logo, favicon) run through a
+// MutationObserver so they are applied in the same tick nodes are inserted,
+// before the browser paints them. Attribute selectors stay unquoted (except
+// the flag values) so the CSS body contains no single quotes. Keep the whole
+// constant free of backticks (raw string literal).
+const skinInjectHTML = `<script id="cpa-skin-center-boot">(function(){
+var CSS=':root[data-cpa-skin=aurora]{--bg-primary:#f4f5fd;--bg-secondary:#ffffff;--bg-tertiary:#e9ebf9;--bg-hover:#e2e5f7;--bg-quinary:#f0f1fb;--floating-surface:#ffffff;--text-primary:#241f4d;--text-secondary:#5c568a;--text-tertiary:#8d88b8;--text-quaternary:#b9b4d6;--border-color:#dfe1f3;--border-primary:#d2d5ee;--border-hover:#c8cbe9;--primary-color:#6a55f2;--primary-hover:#7b68f5;--primary-active:#5a46e0;--primary-contrast:#fff;--cpa-glow:rgba(106,85,242,.20)}'
++':root[data-cpa-skin=midnight]{--bg-primary:#f6f8fa;--bg-secondary:#ffffff;--bg-tertiary:#eaeef2;--bg-hover:#e4e9ee;--bg-quinary:#f0f3f6;--floating-surface:#ffffff;--text-primary:#1f2328;--text-secondary:#59636e;--text-tertiary:#818b98;--text-quaternary:#a5aeb8;--border-color:#d0d7de;--border-primary:#b8c1cb;--border-hover:#a5afba;--primary-color:#0969da;--primary-hover:#1180ef;--primary-active:#0757ba;--primary-contrast:#fff;--cpa-glow:rgba(9,105,218,.16)}'
++':root[data-cpa-skin=sakura]{--bg-primary:#fff5f7;--bg-secondary:#ffffff;--bg-tertiary:#ffe9ef;--bg-hover:#ffdfe8;--bg-quinary:#fff0f3;--floating-surface:#fffdfd;--text-primary:#4a2c3a;--text-secondary:#8a5f72;--text-tertiary:#b58e9e;--text-quaternary:#d6b7c2;--border-color:#f3d6de;--border-primary:#e8bcc8;--border-hover:#dfadc2;--primary-color:#e56399;--primary-hover:#ec74a5;--primary-active:#d15086;--primary-contrast:#fff;--cpa-glow:rgba(229,99,153,.20)}'
++':root[data-cpa-skin=mint]{--bg-primary:#f2faf6;--bg-secondary:#ffffff;--bg-tertiary:#e2f2ea;--bg-hover:#d9eee4;--bg-quinary:#ecf7f1;--floating-surface:#fdfffe;--text-primary:#17362a;--text-secondary:#4f7264;--text-tertiary:#7d9c8f;--text-quaternary:#a9c4b8;--border-color:#d5ece1;--border-primary:#bfe0d2;--border-hover:#aed5c3;--primary-color:#0e9f6e;--primary-hover:#22b07e;--primary-active:#0b8a5f;--primary-contrast:#fff;--cpa-glow:rgba(14,159,110,.16)}'
++':root[data-cpa-skin=sunset]{--bg-primary:#fdf6f0;--bg-secondary:#ffffff;--bg-tertiary:#f9e8db;--bg-hover:#f5dfd0;--bg-quinary:#fbf1e9;--floating-surface:#fffdfb;--text-primary:#3f2a1c;--text-secondary:#86604a;--text-tertiary:#b08968;--text-quaternary:#d3b39a;--border-color:#f0dccd;--border-primary:#e3c6b0;--border-hover:#d8b79d;--primary-color:#e8590c;--primary-hover:#f06f24;--primary-active:#d14e0a;--primary-contrast:#fff;--cpa-glow:rgba(232,89,12,.18)}'
++':root[data-cpa-skin=mono]{--bg-primary:#f4f4f2;--bg-secondary:#ffffff;--bg-tertiary:#eceae6;--bg-hover:#e5e3de;--bg-quinary:#f0efec;--floating-surface:#ffffff;--text-primary:#1a1a1a;--text-secondary:#55554f;--text-tertiary:#8a8a85;--text-quaternary:#b5b5af;--border-color:#e3e3de;--border-primary:#d1d1cb;--border-hover:#c2c2bb;--primary-color:#1a1a1a;--primary-hover:#333330;--primary-active:#000000;--primary-contrast:#fff;--cpa-glow:rgba(26,26,26,.10)}'
++':root[data-theme=dark][data-cpa-skin=aurora]{--bg-primary:#0b0f1e;--bg-secondary:#111731;--bg-tertiary:#1a2145;--bg-hover:#1f2850;--bg-quinary:#151b38;--floating-surface:#171e3d;--text-primary:#e8ecff;--text-secondary:#aab3dd;--text-tertiary:#7c86b4;--text-quaternary:#55608f;--border-color:#262e55;--border-primary:#303a6b;--border-hover:#3a4577;--primary-color:#7c6cff;--primary-hover:#8d80ff;--primary-active:#6a58f2;--primary-contrast:#fff;--cpa-glow:rgba(124,108,255,.32)}'
++':root[data-theme=dark][data-cpa-skin=midnight]{--bg-primary:#0d1117;--bg-secondary:#161b22;--bg-tertiary:#21262d;--bg-hover:#262c36;--bg-quinary:#1c2129;--floating-surface:#1c2129;--text-primary:#e6edf3;--text-secondary:#9198a1;--text-tertiary:#6e7681;--text-quaternary:#484f58;--border-color:#30363d;--border-primary:#3d444d;--border-hover:#444c56;--primary-color:#58a6ff;--primary-hover:#6cb2ff;--primary-active:#4392e8;--primary-contrast:#0d1117;--cpa-glow:rgba(88,166,255,.26)}'
++':root[data-theme=dark][data-cpa-skin=sakura]{--bg-primary:#211318;--bg-secondary:#2b1a21;--bg-tertiary:#38222b;--bg-hover:#412830;--bg-quinary:#2f1c23;--floating-surface:#332027;--text-primary:#f9e6ec;--text-secondary:#cfa9b6;--text-tertiary:#a1798a;--text-quaternary:#7a5563;--border-color:#4a2e38;--border-primary:#5d3a46;--border-hover:#6b4552;--primary-color:#f27ba9;--primary-hover:#f58fb8;--primary-active:#e06595;--primary-contrast:#211318;--cpa-glow:rgba(242,123,169,.28)}'
++':root[data-theme=dark][data-cpa-skin=mint]{--bg-primary:#0f1c17;--bg-secondary:#14251e;--bg-tertiary:#1b3129;--bg-hover:#20392f;--bg-quinary:#17211c;--floating-surface:#182a23;--text-primary:#e3f3ea;--text-secondary:#a3c4b5;--text-tertiary:#77998a;--text-quaternary:#547466;--border-color:#24443a;--border-primary:#2d5548;--border-hover:#356354;--primary-color:#2fbd85;--primary-hover:#45cb95;--primary-active:#26a574;--primary-contrast:#0f1c17;--cpa-glow:rgba(47,189,133,.26)}'
++':root[data-theme=dark][data-cpa-skin=sunset]{--bg-primary:#1c1210;--bg-secondary:#2a1a14;--bg-tertiary:#38231a;--bg-hover:#402a1f;--bg-quinary:#2e1c15;--floating-surface:#332018;--text-primary:#ffe9d6;--text-secondary:#d9b29a;--text-tertiary:#b08868;--text-quaternary:#87664e;--border-color:#4a2e21;--border-primary:#5d3a29;--border-hover:#6b4531;--primary-color:#ff7a45;--primary-hover:#ff8f60;--primary-active:#f0652f;--primary-contrast:#1c1210;--cpa-glow:rgba(255,122,69,.28)}'
++':root[data-theme=dark][data-cpa-skin=mono]{--bg-primary:#111111;--bg-secondary:#1a1a1a;--bg-tertiary:#242424;--bg-hover:#2a2a2a;--bg-quinary:#1d1d1d;--floating-surface:#202020;--text-primary:#f0f0ee;--text-secondary:#a8a8a4;--text-tertiary:#7c7c78;--text-quaternary:#555552;--border-color:#2e2e2c;--border-primary:#3c3c3a;--border-hover:#464644;--primary-color:#e8e8e4;--primary-hover:#ffffff;--primary-active:#d4d4d0;--primary-contrast:#111111;--cpa-glow:rgba(232,232,228,.12)}'
++':root[data-cpa-skin] body{background-image:radial-gradient(1100px 480px at 78% -8%,var(--cpa-glow),transparent 62%),radial-gradient(900px 420px at 6% 108%,var(--cpa-glow),transparent 58%)!important;background-attachment:fixed!important}'
++'html[data-cpa-hide-current="1"] [class*=LoginPage-module__connectionBox]{display:none!important}'
++'html[data-cpa-hide-custom="1"] [class*=LoginPage-module__toggleAdvanced]{display:none!important}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] body{background-image:radial-gradient(1100px 480px at 78% -8%,var(--cpa-glow),transparent 62%),radial-gradient(900px 420px at 6% 108%,var(--cpa-glow),transparent 58%),repeating-linear-gradient(0deg,color-mix(in srgb,var(--text-tertiary) 7%,transparent) 0 1px,transparent 1px 46px),repeating-linear-gradient(90deg,color-mix(in srgb,var(--text-tertiary) 7%,transparent) 0 1px,transparent 1px 46px)!important}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] [class*=LoginPage-module__loginCard]{background:color-mix(in srgb,var(--bg-secondary) 70%,transparent)!important;backdrop-filter:blur(20px)!important;-webkit-backdrop-filter:blur(20px)!important;border:1px solid color-mix(in srgb,var(--text-tertiary) 24%,transparent)!important;border-radius:24px!important;box-shadow:0 28px 80px rgba(0,0,0,.5),inset 0 1px 0 color-mix(in srgb,#fff 9%,transparent)!important}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] [class*=LoginPage-module__loginCard] .input{background:color-mix(in srgb,var(--bg-tertiary) 50%,transparent)!important;border:1px solid color-mix(in srgb,var(--text-quaternary) 32%,transparent)!important;border-radius:13px!important;transition:border-color .2s,box-shadow .2s!important}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] [class*=LoginPage-module__loginCard] .input:focus{border-color:var(--primary-color)!important;box-shadow:0 0 0 3px var(--cpa-glow)!important;outline:none!important}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] [class*=LoginPage-module__loginCard] .btn-primary{background:linear-gradient(135deg,var(--primary-color),color-mix(in srgb,var(--primary-color) 55%,#4cc9f0))!important;border:none!important;border-radius:14px!important;box-shadow:0 10px 30px var(--cpa-glow)!important;transition:transform .18s,box-shadow .18s,filter .18s!important}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] [class*=LoginPage-module__loginCard] .btn-primary:hover{transform:translateY(-2px)!important;filter:brightness(1.08)!important;box-shadow:0 16px 40px var(--cpa-glow)!important}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] [class*=LoginPage-module__loginCard] .btn-primary:active{transform:translateY(0)!important}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] [class*=LoginPage-module__brandWord]{background:linear-gradient(160deg,var(--text-primary) 30%,var(--primary-color))!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:transparent!important}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] [class*=LoginPage-module__subtitle]{letter-spacing:.04em!important}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] [class*=LoginPage-module__label]{letter-spacing:.02em!important}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] [class*=LoginPage-module__brandWord]{font-size:clamp(88px,11vw,220px)!important;line-height:1.04!important}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] [class*=LoginPage-module__brandContent]{max-width:100%!important;overflow:hidden!important}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor{width:100%;margin-top:clamp(28px,4.5vh,60px);display:flex;flex-direction:column;gap:clamp(14px,1.8vh,24px)}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-tags{display:flex;gap:8px;flex-wrap:wrap}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-tags span{font-size:clamp(10px,0.72vw,15px);letter-spacing:.16em;color:var(--text-secondary);border:1px solid color-mix(in srgb,var(--text-tertiary) 30%,transparent);padding:clamp(5px,0.42vw,8px) clamp(11px,0.95vw,19px);border-radius:999px;background:color-mix(in srgb,var(--bg-secondary) 50%,transparent)}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-card{background:color-mix(in srgb,var(--bg-secondary) 60%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid color-mix(in srgb,var(--text-tertiary) 22%,transparent);border-radius:clamp(16px,1.2vw,24px);padding:clamp(16px,1.5vw,30px) clamp(18px,1.8vw,34px);display:flex;flex-direction:column;gap:clamp(12px,1.4vh,20px);box-shadow:0 22px 60px rgba(0,0,0,.4)}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-head{display:flex;align-items:center;gap:10px}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-dot{width:clamp(9px,0.62vw,13px);height:clamp(9px,0.62vw,13px);border-radius:50%;background:#34d399;box-shadow:0 0 0 0 rgba(52,211,153,.5);animation:cpaPulse 2s infinite;flex-shrink:0}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-title{font-size:clamp(11px,0.78vw,16px);color:var(--text-secondary);display:flex;flex-direction:column;min-width:0;gap:3px}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-title b{color:var(--text-primary);font-size:clamp(14px,0.98vw,21px);letter-spacing:.02em}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-title [data-cpa-host]{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:ui-monospace,Consolas,monospace}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-ok{margin-left:auto;font-size:clamp(10px,0.7vw,14px);font-weight:700;letter-spacing:.08em;color:#34d399;border:1px solid color-mix(in srgb,#34d399 40%,transparent);padding:clamp(3px,0.3vw,6px) clamp(9px,0.75vw,14px);border-radius:999px;background:color-mix(in srgb,#34d399 10%,transparent);animation:cpaBreath 2.4s ease-in-out infinite;flex-shrink:0}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:clamp(12.5px,0.88vw,19px);line-height:2.15;color:var(--text-secondary);background:color-mix(in srgb,var(--bg-primary) 55%,transparent);border:1px solid color-mix(in srgb,var(--text-quaternary) 18%,transparent);border-radius:12px;padding:clamp(13px,1.2vw,24px) clamp(16px,1.4vw,28px)}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-line{opacity:0;animation:cpaLine 6.5s infinite;white-space:nowrap;overflow:hidden}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-line:nth-child(1){animation-delay:.2s}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-line:nth-child(2){animation-delay:1.5s}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-line:nth-child(3){animation-delay:2.8s}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-line i{font-style:normal;color:var(--primary-color);font-weight:700;margin-right:8px}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-cursor{display:inline-block;width:clamp(7px,0.5vw,10px);height:clamp(13px,0.95vw,19px);margin-left:4px;vertical-align:-2px;background:var(--primary-color);animation:cpaBlink 1s steps(1) infinite}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-chips{display:flex;gap:8px;flex-wrap:wrap}'
++'html[data-theme=dark][data-cpa-skin][data-cpa-enhance="1"] .cpa-decor-chips span{font-size:clamp(11.5px,0.8vw,17px);color:var(--text-secondary);background:color-mix(in srgb,var(--bg-secondary) 55%,transparent);border:1px solid color-mix(in srgb,var(--text-quaternary) 22%,transparent);padding:clamp(8px,0.65vw,13px) clamp(13px,1.1vw,22px);border-radius:12px}'
++'@keyframes cpaPulse{0%{box-shadow:0 0 0 0 rgba(52,211,153,.45)}70%{box-shadow:0 0 0 9px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}'
++'@keyframes cpaBreath{0%,100%{opacity:1}50%{opacity:.55}}'
++'@keyframes cpaLine{0%{opacity:0;transform:translateY(5px)}5%{opacity:1;transform:none}82%{opacity:1}92%{opacity:0}100%{opacity:0}}'
++'@keyframes cpaBlink{50%{opacity:0}}';
+var ID='cpa-skin-center-vars';
+var N=['aurora','midnight','sakura','mint','sunset','mono'];
+var DARK=['aurora','midnight','sunset'];
+function cfgRead(){try{return JSON.parse(localStorage.getItem('cpaSkinLogin')||'null')}catch(e){return null}}
+function logoRead(){try{return localStorage.getItem('cpaSkinLogo')}catch(e){return null}}
+function ensure(){
+try{
+var d=document.documentElement;
+var t=null;try{t=localStorage.getItem('cpaSkinTheme')}catch(e){}
+if(t&&N.indexOf(t)<0){t=null}
+if(t){
+if(d.getAttribute('data-cpa-skin')!==t){d.setAttribute('data-cpa-skin',t)}
+var cur=d.getAttribute('data-theme');
+if(DARK.indexOf(t)>=0){if(cur!=='dark'){d.setAttribute('data-theme','dark')}}
+else if(cur==='dark'){d.setAttribute('data-theme','white')}
+}else{
+if(d.hasAttribute('data-cpa-skin')){d.removeAttribute('data-cpa-skin')}
+}
+var c=cfgRead();
+var hCur=c&&c.hideCurrent?'1':'0';
+var hCus=c&&c.hideCustom?'1':'0';
+var enh=(!c||c.styleEnhance!==false)?'1':'0';
+// Idempotent writes only: setting the same value would re-trigger our own
+// attribute observer into an endless microtask loop.
+if(d.getAttribute('data-cpa-hide-current')!==hCur){d.setAttribute('data-cpa-hide-current',hCur)}
+if(d.getAttribute('data-cpa-hide-custom')!==hCus){d.setAttribute('data-cpa-hide-custom',hCus)}
+if(d.getAttribute('data-cpa-enhance')!==enh){d.setAttribute('data-cpa-enhance',enh)}
+var s=document.getElementById(ID);
+if(!s){s=document.createElement('style');s.id=ID;s.textContent=CSS;(document.head||d).appendChild(s)}
+else if(s.textContent!==CSS){s.textContent=CSS}
+}catch(e){}
+applyTexts();
+}
+function q(sel){return document.querySelectorAll(sel)}
+function setOrig(el,key){if(el.getAttribute(key)===null){el.setAttribute(key,el.textContent)}}
+function applyTexts(){
+try{
+var c=cfgRead();
+var d=document.documentElement;
+if(!document.body){return}
+var inLogin=!!document.querySelector('[class*=LoginPage-module__container]');
+var logo=logoRead();
+if(logo){
+var links=q('link[rel*=icon]');
+for(var i=0;i<links.length;i++){if(links[i].getAttribute('href')!==logo){links[i].setAttribute('href',logo)}}
+}
+var logos=q('img[class*=LoginPage-module__logo]');
+if(logo){
+for(var j=0;j<logos.length;j++){
+if(!logos[j].getAttribute('data-cpa-orig-src')){logos[j].setAttribute('data-cpa-orig-src',logos[j].getAttribute('src'))}
+if(logos[j].getAttribute('src')!==logo){logos[j].setAttribute('src',logo)}
+}
+}else{
+for(var k=0;k<logos.length;k++){var lo=logos[k].getAttribute('data-cpa-orig-src');if(lo){logos[k].setAttribute('src',lo);logos[k].removeAttribute('data-cpa-orig-src')}}
+}
+if(inLogin){
+var spans=q('span[class*=brandWord]');
+if(c&&c.brand){
+var parts=String(c.brand).split(/[\s\n]+/).filter(Boolean).slice(0,6);
+var native=[];spans.forEach(function(s){if(!s.hasAttribute('data-cpa-clone'))native.push(s)});
+q('span[data-cpa-clone]').forEach(function(s){s.remove()});
+if(native.length&&parts.length){
+native.forEach(function(s){setOrig(s,'data-cpa-orig')});
+var pool=native.slice();
+for(var m=pool.length;m<parts.length;m++){var cl=native[0].cloneNode(true);cl.setAttribute('data-cpa-clone','1');native[0].parentNode.appendChild(cl);pool.push(cl)}
+pool.forEach(function(s2,idx){
+var want=idx<parts.length?parts[idx]:'';
+var hide=idx>=parts.length;
+// Strict idempotency: unconditional text writes would re-trigger our own
+// observer and starve the main thread in an endless microtask loop.
+if(s2.textContent!==want){s2.textContent=want}
+if(hide){s2.style.display='none'}else if(s2.style.display==='none'){s2.style.display=''}
+})
+}
+}else{
+spans.forEach(function(s3){var o=s3.getAttribute('data-cpa-orig');if(o!==null&&o!==undefined&&o!==''){if(s3.textContent!==o){s3.textContent=o}s3.removeAttribute('data-cpa-orig');if(s3.style.display==='none'){s3.style.display=''}}});
+q('span[data-cpa-clone]').forEach(function(s4){s4.remove()});
+}
+var tEls=q('div[class*=LoginPage-module__title]');
+tEls.forEach(function(el){
+if(c&&c.title){
+setOrig(el,'data-cpa-orig');
+if(el.textContent!==c.title){el.textContent=c.title}
+}else{
+var o2=el.getAttribute('data-cpa-orig');if(o2!==null&&o2!==undefined&&o2!==''){if(el.textContent!==o2){el.textContent=o2}el.removeAttribute('data-cpa-orig')}
+}
+});
+}
+if(c&&c.title){
+if(document.title!==c.title){document.title=c.title}
+}
+applyDecor(c);
+}catch(e){}
+}
+function removeDecor(){q('.cpa-decor').forEach(function(e){e.remove()})}
+function applyDecor(c){
+try{
+var d=document.documentElement;
+if(d.getAttribute('data-theme')!=='dark'||!d.getAttribute('data-cpa-skin')||d.getAttribute('data-cpa-enhance')!=='1'||(c&&c.brandFx===false)){removeDecor();return}
+var panel=document.querySelector('[class*=LoginPage-module__brandPanel]');
+if(!panel){removeDecor();return}
+var el=panel.querySelector('[data-cpa-decor]');
+if(el){var h2=el.querySelector('[data-cpa-host]');if(h2&&h2.textContent!==location.host){h2.textContent=location.host}return}
+el=document.createElement('div');
+el.className='cpa-decor';
+el.setAttribute('data-cpa-decor','1');
+el.innerHTML='<div class="cpa-decor-tags"><span>OPENAI</span><span>CLAUDE</span><span>GEMINI</span><span>CODEX</span></div>'
++'<div class="cpa-decor-card"><div class="cpa-decor-head"><span class="cpa-decor-dot"></span><div class="cpa-decor-title"><b>live gateway</b><span data-cpa-host></span></div><span class="cpa-decor-ok">200 OK</span></div>'
++'<div class="cpa-decor-code"><div class="cpa-decor-line"><i>POST</i>/v1/chat/completions</div><div class="cpa-decor-line">Authorization: Bearer sk-********</div><div class="cpa-decor-line">model: claude-sonnet-4-5 / gpt-5.5<span class="cpa-decor-cursor"></span></div></div></div>'
++'<div class="cpa-decor-chips"><span>OpenAI compatible</span><span>Claude compatible</span><span>Streaming responses</span><span>Multi-account load balancing</span></div>';
+panel.appendChild(el);
+var h=el.querySelector('[data-cpa-host]');
+if(h){h.textContent=location.host}
+}catch(e){}
+}
+var pending=0;
+// Microtask debounce: runs in the same task as the DOM mutation, before the
+// browser paints — a rAF here would let one frame of the original content
+// flash on screen.
+function schedule(){if(pending){return}pending=1;Promise.resolve().then(function(){pending=0;ensure()})}
+// Site-wide config is the single source of truth shared by every origin
+// (port 80 and :8317 have separate localStorage spaces). Timestamps decide:
+// whichever was saved last — the server payload or a newer local edit — wins,
+// so both entries converge on the same skin.
+function pullSiteConfig(){
+try{
+fetch('/v0/resource/plugins/skin-center/config').then(function(r){return r.ok?r.json():null}).then(function(sc){
+if(!sc||(!sc.login&&!sc.theme&&!sc.logo)){return}
+var serverStamp=sc.updated||0;
+var knownStamp=0;try{knownStamp=Number(localStorage.getItem('cpaSkinServerStamp')||0)}catch(e){}
+var localMod=0;try{localMod=Number(localStorage.getItem('cpaSkinLocalStamp')||0)}catch(e){}
+if(localMod>serverStamp&&knownStamp>0){return}
+var changed=false;
+try{
+if(sc.theme&&localStorage.getItem('cpaSkinTheme')!==sc.theme){localStorage.setItem('cpaSkinTheme',sc.theme);changed=true}
+if(sc.logo){if(localStorage.getItem('cpaSkinLogo')!==sc.logo){localStorage.setItem('cpaSkinLogo',sc.logo);changed=true}}
+else if(localStorage.getItem('cpaSkinLogo')){localStorage.removeItem('cpaSkinLogo');changed=true}
+if(sc.login){var ls=JSON.stringify(sc.login);if(localStorage.getItem('cpaSkinLogin')!==ls){localStorage.setItem('cpaSkinLogin',ls);changed=true}}
+if((serverStamp||Date.now())!==knownStamp){localStorage.setItem('cpaSkinServerStamp',String(serverStamp||Date.now()));changed=true}
+}catch(e){}
+if(changed){schedule()}
+}).catch(function(){})
+}catch(e){}
+}
+ensure();
+window.addEventListener('storage',function(){schedule()});
+document.addEventListener('DOMContentLoaded',schedule);
+window.addEventListener('load',schedule);
+setInterval(ensure,2000);
+try{
+var mo=new MutationObserver(function(){schedule()});
+mo.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['data-theme','data-cpa-skin']});
+}catch(e){}
+pullSiteConfig();
+})();</script>`

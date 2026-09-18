@@ -1,0 +1,5 @@
+# build artifacts
+*.dll
+*.so
+*.h
+skin-center-debug.log
