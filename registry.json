@@ -10,8 +10,16 @@
       "repository": "https://github.com/lemon-casino/CLIProxyAPI-Skin",
       "homepage": "https://github.com/lemon-casino/CLIProxyAPI-Skin",
       "license": "MIT",
-      "tags": ["skin", "theme", "ui", "management", "login"],
-      "install": { "type": "github_release" }
+      "tags": [
+        "skin",
+        "theme",
+        "ui",
+        "management",
+        "login"
+      ],
+      "install": {
+        "type": "github-release"
+      }
     }
   ]
 }
