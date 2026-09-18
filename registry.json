@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "plugins": [
+    {
+      "id": "skin-center",
+      "name": "Skin Center 皮肤中心",
+      "description": "CLIProxyAPI 管理面板皮肤插件：六主题换肤（明暗自适应）、登录页定制（品牌大标题/卡片标题/品牌图标上传/地址显示开关）、暗色风格增强与 LIVE GATEWAY 动画、站点级配置持久化（跨端口/跨设备一致，清浏览器数据不丢）",
+      "author": "lemon-casino",
+      "version": "1.8.0",
+      "repository": "https://github.com/lemon-casino/CLIProxyAPI-Skin",
+      "homepage": "https://github.com/lemon-casino/CLIProxyAPI-Skin",
+      "license": "MIT",
+      "tags": ["skin", "theme", "ui", "management", "login"],
+      "install": { "type": "github_release" }
+    }
+  ]
+}
